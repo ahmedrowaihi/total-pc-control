@@ -20,11 +20,12 @@ server.tool(
   async ({ format }) => {
     try {
       const imageBase64 = await tools.captureScreen(format);
+      // imageBase64 now includes the filename and prefix
       return {
         content: [
           {
             type: "text",
-            text: `Screen captured successfully. Image data: data:image/${format || CaptureFormat.PNG};base64,${imageBase64}`,
+            text: `Screen captured successfully. ${imageBase64}`, 
           },
         ],
       };
@@ -34,7 +35,8 @@ server.tool(
         content: [
           {
             type: "text",
-            text: `Error capturing screen: ${error instanceof Error ? error.message : String(error)}`,
+            // Return the detailed error message and stack trace
+            text: `Error capturing screen: ${error instanceof Error ? error.message : String(error)}\nStack: ${error instanceof Error ? error.stack : 'No stack trace available'}`, // eslint-disable-line
           },
         ],
       };
@@ -56,11 +58,12 @@ server.tool(
     try {
       const region: Region = { left, top, width, height };
       const imageBase64 = await tools.captureRegion(region, format);
+      // imageBase64 now includes the filename and prefix
       return {
         content: [
           {
             type: "text",
-            text: `Screen region captured successfully. Image data: data:image/${format || CaptureFormat.PNG};base64,${imageBase64}`,
+            text: `Screen region captured successfully. ${imageBase64}`,
           },
         ],
       };
@@ -70,7 +73,8 @@ server.tool(
         content: [
           {
             type: "text",
-            text: `Error capturing screen region: ${error instanceof Error ? error.message : String(error)}`,
+            // Return the detailed error message and stack trace
+            text: `Error capturing screen region: ${error instanceof Error ? error.message : String(error)}\nStack: ${error instanceof Error ? error.stack : 'No stack trace available'}`, // eslint-disable-line
           },
         ],
       };

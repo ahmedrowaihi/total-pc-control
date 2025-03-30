@@ -1,4 +1,4 @@
-import { keyboard } from "@nut-tree/nut-js";
+import { keyboard, Key as NutKey } from "@nut-tree-fork/nut-js"; // Import Key as NutKey to avoid naming conflict
 import { Key } from "../types.js";
 
 /**
@@ -7,8 +7,15 @@ import { Key } from "../types.js";
  * @returns Corresponding nut.js key
  */
 function mapToNutKey(key: Key): any {
-  // For simplicity, we're using string-based mapping since nut.js uses similar key names
-  return (keyboard.Key as any)[key.toUpperCase()];
+  // Specific mapping for Windows key
+  if (key === Key.WINDOWS) {
+    return NutKey.LeftSuper; // Or LeftWin, Meta depending on the library
+  }
+  if (key === Key.ENTER) {
+    return NutKey.Enter;
+  }
+  // Use the imported NutKey enum for others
+  return (NutKey as any)[key.toUpperCase()];
 }
 
 /**
